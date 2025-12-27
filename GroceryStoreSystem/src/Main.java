@@ -1,101 +1,233 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Main {
+    private static ArrayList<Product> products = new ArrayList<>();
+    private static ArrayList<Customer> customers = new ArrayList<>();
+    private static ArrayList<Sale> sales = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        System.out.println("=== Grocery Store Management System ===");
+        addTestData();
+
+        boolean running = true;
+        while (running) {
+            displayMenu();
+            int choice = readInt();
+
+            switch (choice) {
+                case 1: addProduct(); break;
+                case 2: viewAllProducts(); break;
+                case 3: addCustomer(); break;
+                case 4: viewAllCustomers(); break;
+                case 5: addSale(); break;
+                case 6: viewAllSales(); break;
+                case 0:
+                    System.out.println("\nGoodbye.");
+                    running = false;
+                    break;
+                default:
+                    System.out.println("\nInvalid choice.");
+            }
+
+            if (running) {
+                System.out.print("\nPress Enter to continue...");
+                scanner.nextLine();
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static void displayMenu() {
+        System.out.println("\n===============================");
+        System.out.println("      GROCERY STORE SYSTEM");
+        System.out.println("===============================");
+        System.out.println("1. Add Product");
+        System.out.println("2. View All Products");
+        System.out.println("3. Add Customer");
+        System.out.println("4. View All Customers");
+        System.out.println("5. Add Sale");
+        System.out.println("6. View All Sales");
+        System.out.println("0. Exit");
+        System.out.println("===============================");
+        System.out.print("Enter your choice: ");
+    }
+
+    private static void addTestData() {
+        products.add(new Product("Milk", 650, "Dairy", true));
+        products.add(new Product("Rice", 5200, "Grains", true));
+        products.add(new Product("Bread", 300, "Bakery", true));
+
+        customers.add(new Customer(5001, "Alice Johnson", "+77011234567", 50));
+        customers.add(new Customer(5002, "Bob Williams", "+77012345678", 150));
+
+        sales.add(new Sale(1001, "John Doe", 8000, "Pending"));
+        sales.add(new Sale(1002, "Peter Parker", 3500, "Pending"));
+    }
+
+    private static void addProduct() {
+        System.out.println("\n--- ADD PRODUCT ---");
+
+        System.out.print("Enter product name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter price (KZT): ");
+        double price = readDouble();
+
+        System.out.print("Enter category: ");
+        String category = scanner.nextLine();
+
+        System.out.print("Is available? (true/false): ");
+        boolean available = readBoolean();
+
+        Product p = new Product(name, price, category, available);
+        products.add(p);
+
+        System.out.println("\nProduct added.");
+    }
+
+    private static void viewAllProducts() {
+        System.out.println("\n===============================");
+        System.out.println("          ALL PRODUCTS");
+        System.out.println("===============================");
+
+        if (products.isEmpty()) {
+            System.out.println("No products found.");
+            return;
+        }
+
+        System.out.println("Total items: " + products.size());
         System.out.println();
 
-        Product product1 = new Product("Milk", 650.0, "Dairy", true);
-        Product product2 = new Product("Rice", 5200.0, "Grains", true);
-        Product product3 = new Product();
+        for (int i = 0; i < products.size(); i++) {
+            Product p = products.get(i);
+            System.out.println((i + 1) + ". " + p.getName() + " - " + p.getFormattedPrice() + " KZT");
+            System.out.println("   Category: " + p.getCategory());
+            System.out.println("   Available: " + (p.isAvailable() ? "Yes" : "No"));
+            if (p.isExpensive()) {
+                System.out.println("   Note: Premium item");
+            }
+            System.out.println();
+        }
+    }
 
-        Sale sale1 = new Sale(1001, "John Doe", 8000.0, "Pending");
-        Sale sale2 = new Sale(1002, "Peter Parker", 0.0, "Pending");
+    private static void addCustomer() {
+        System.out.println("\n--- ADD CUSTOMER ---");
 
-        Customer customer1 = new Customer(5001, "Alice Johnson", "+77011234567", 50);
-        Customer customer2 = new Customer(5002, "Bob Williams", "+77012345678", 150);
+        System.out.print("Enter customer ID: ");
+        int id = readInt();
 
-        System.out.println("--- PRODUCTS ---");
-        System.out.println(product1);
-        System.out.println(product2);
-        System.out.println(product3);
+        System.out.print("Enter name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter phone number: ");
+        String phone = scanner.nextLine();
+
+        System.out.print("Enter loyalty points: ");
+        int points = readInt();
+
+        Customer c = new Customer(id, name, phone, points);
+        customers.add(c);
+
+        System.out.println("\nCustomer added.");
+    }
+
+    private static void viewAllCustomers() {
+        System.out.println("\n===============================");
+        System.out.println("         ALL CUSTOMERS");
+        System.out.println("===============================");
+
+        if (customers.isEmpty()) {
+            System.out.println("No customers found.");
+            return;
+        }
+
+        System.out.println("Total customers: " + customers.size());
         System.out.println();
 
-        System.out.println("--- SALES ---");
-        System.out.println(sale1);
-        System.out.println(sale2);
+        for (int i = 0; i < customers.size(); i++) {
+            Customer c = customers.get(i);
+            System.out.println((i + 1) + ". " + c.getName());
+            System.out.println("   ID: " + c.getCustomerId());
+            System.out.println("   Phone: " + c.getPhoneNumber());
+            System.out.println("   Points: " + c.getLoyaltyPoints());
+            System.out.println("   VIP: " + (c.isVIP() ? "Yes" : "No"));
+            System.out.println();
+        }
+    }
+
+    private static void addSale() {
+        System.out.println("\n--- ADD SALE ---");
+
+        System.out.print("Enter sale ID: ");
+        int saleId = readInt();
+
+        System.out.print("Enter customer name: ");
+        String customerName = scanner.nextLine();
+
+        System.out.print("Enter total amount (KZT): ");
+        double total = readDouble();
+
+        System.out.print("Enter status (Pending/Completed/Cancelled): ");
+        String status = scanner.nextLine();
+
+        Sale s = new Sale(saleId, customerName, total, status);
+        sales.add(s);
+
+        System.out.println("\nSale added.");
+    }
+
+    private static void viewAllSales() {
+        System.out.println("\n===============================");
+        System.out.println("            ALL SALES");
+        System.out.println("===============================");
+
+        if (sales.isEmpty()) {
+            System.out.println("No sales found.");
+            return;
+        }
+
+        System.out.println("Total sales: " + sales.size());
         System.out.println();
 
-        System.out.println("--- CUSTOMERS ---");
-        System.out.println(customer1);
-        System.out.println(customer2);
-        System.out.println();
+        for (int i = 0; i < sales.size(); i++) {
+            Sale s = sales.get(i);
+            System.out.println((i + 1) + ". Sale ID: " + s.getSaleId());
+            System.out.println("   Customer: " + s.getCustomerName());
+            System.out.println("   Total: " + String.format("%.2f", s.getTotalAmount()) + " KZT");
+            System.out.println("   Status: " + s.getStatus());
+            System.out.println();
+        }
+    }
 
-        System.out.println("--- TESTING GETTERS ---");
-        System.out.println("Product 1 name: " + product1.getName());
-        System.out.println("Sale 1 status: " + sale1.getStatus());
-        System.out.println("Customer 1 points: " + customer1.getLoyaltyPoints());
-        System.out.println();
+    private static int readInt() {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Enter a valid integer: ");
+            scanner.nextLine();
+        }
+        int value = scanner.nextInt();
+        scanner.nextLine();
+        return value;
+    }
 
-        System.out.println("--- TESTING SETTERS ---");
-        System.out.println("Updating product3...");
-        product3.setName("Apples");
-        product3.setPrice(4500.0);
-        product3.setCategory("Fruits");
-        product3.setAvailable(true);
-        System.out.println("Updated: " + product3);
-        System.out.println();
+    private static double readDouble() {
+        while (!scanner.hasNextDouble()) {
+            System.out.print("Enter a valid number: ");
+            scanner.nextLine();
+        }
+        double value = scanner.nextDouble();
+        scanner.nextLine();
+        return value;
+    }
 
-        System.out.println("Changing sale2 customer...");
-        sale2.setCustomerName("Peter Parker");
-        System.out.println("Updated: " + sale2);
-        System.out.println();
-
-        System.out.println("--- TESTING PRODUCT METHODS ---");
-        System.out.println(product2.getName() + " is expensive: " + product2.isExpensive());
-        System.out.println("Applying 10% discount to " + product2.getName());
-        product2.applyDiscount(10);
-        System.out.println("New price: " + product2.getPrice() + " KZT");
-        System.out.println();
-
-        System.out.println("--- TESTING SALE METHODS ---");
-        System.out.println("Sale " + sale1.getSaleId() + " pending: " + sale1.isPending());
-        sale1.completeSale();
-        System.out.println("Sale " + sale1.getSaleId() + " status: " + sale1.getStatus());
-        System.out.println();
-
-        System.out.println("Adding to sale " + sale2.getSaleId());
-        sale2.addAmount(1500.0);
-        sale2.addAmount(2000.0);
-        System.out.println("Sale " + sale2.getSaleId() + " total: " + sale2.getTotalAmount() + " KZT");
-        System.out.println();
-
-        System.out.println("--- TESTING CUSTOMER METHODS ---");
-        System.out.println(customer1.getName() + " is VIP: " + customer1.isVIP());
-        System.out.println(customer2.getName() + " is VIP: " + customer2.isVIP());
-        System.out.println();
-
-        System.out.println("Adding 60 points to " + customer1.getName());
-        customer1.addLoyaltyPoints(60);
-        System.out.println(customer1.getName() + " points: " + customer1.getLoyaltyPoints());
-        System.out.println(customer1.getName() + " is VIP: " + customer1.isVIP());
-        System.out.println();
-
-        System.out.println("--- FINAL STATE ---");
-        System.out.println("Products:");
-        System.out.println(product1);
-        System.out.println(product2);
-        System.out.println(product3);
-        System.out.println();
-
-        System.out.println("Sales:");
-        System.out.println(sale1);
-        System.out.println(sale2);
-        System.out.println();
-
-        System.out.println("Customers:");
-        System.out.println(customer1);
-        System.out.println(customer2);
-        System.out.println();
-
-        System.out.println("=== Program Complete ===");
+    private static boolean readBoolean() {
+        while (!scanner.hasNextBoolean()) {
+            System.out.print("Enter true or false: ");
+            scanner.nextLine();
+        }
+        boolean value = scanner.nextBoolean();
+        scanner.nextLine();
+        return value;
     }
 }

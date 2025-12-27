@@ -5,10 +5,10 @@ public class Customer {
     private int loyaltyPoints;
 
     public Customer(int customerId, String name, String phoneNumber, int loyaltyPoints) {
-        this.customerId = customerId;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.loyaltyPoints = loyaltyPoints;
+        setCustomerId(customerId);
+        setName(name);
+        setPhoneNumber(phoneNumber);
+        setLoyaltyPoints(loyaltyPoints);
     }
 
     public Customer() {
@@ -23,18 +23,52 @@ public class Customer {
     public String getPhoneNumber() { return phoneNumber; }
     public int getLoyaltyPoints() { return loyaltyPoints; }
 
-    public void setCustomerId(int customerId) { this.customerId = customerId; }
-    public void setName(String name) { this.name = name; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public void setLoyaltyPoints(int loyaltyPoints) { this.loyaltyPoints = loyaltyPoints; }
+    public void setCustomerId(int customerId) {
+        if (customerId >= 0) {
+            this.customerId = customerId;
+        } else {
+            System.out.println("Warning: customerId cannot be negative! Setting to 0.");
+            this.customerId = 0;
+        }
+    }
+
+    public void setName(String name) {
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name.trim();
+        } else {
+            System.out.println("Warning: Customer name cannot be empty! Setting to 'Unknown Customer'.");
+            this.name = "Unknown Customer";
+        }
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {
+            this.phoneNumber = phoneNumber.trim();
+        } else {
+            System.out.println("Warning: Phone number cannot be empty! Setting to 'N/A'.");
+            this.phoneNumber = "N/A";
+        }
+    }
+
+    public void setLoyaltyPoints(int loyaltyPoints) {
+        if (loyaltyPoints >= 0) {
+            this.loyaltyPoints = loyaltyPoints;
+        } else {
+            System.out.println("Warning: Loyalty points cannot be negative! Setting to 0.");
+            this.loyaltyPoints = 0;
+        }
+    }
 
     public void addLoyaltyPoints(int points) {
-        if (points <= 0) return;
+        if (points <= 0) {
+            System.out.println("Warning: Points must be positive!");
+            return;
+        }
         this.loyaltyPoints += points;
     }
 
     public boolean isVIP() {
-        return this.loyaltyPoints > 100;
+        return loyaltyPoints > 100;
     }
 
     public String getContactInfo() {
