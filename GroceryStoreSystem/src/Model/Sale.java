@@ -1,3 +1,5 @@
+package Model;
+
 public class Sale {
     private int saleId;
     private String customerName;
@@ -83,7 +85,7 @@ public class Sale {
 
     @Override
     public String toString() {
-        return "Sale{saleId=" + saleId +
+        return "Model.Sale{saleId=" + saleId +
                 ", customerName='" + customerName + '\'' +
                 ", totalAmount=" + totalAmount +
                 ", status='" + status + '\'' +

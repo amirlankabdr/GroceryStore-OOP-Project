@@ -1,3 +1,5 @@
+package Model;
+
 public class Customer {
     private int customerId;
     private String name;
@@ -13,7 +15,7 @@ public class Customer {
 
     public Customer() {
         this.customerId = 0;
-        this.name = "Unknown Customer";
+        this.name = "Unknown Model.Customer";
         this.phoneNumber = "N/A";
         this.loyaltyPoints = 0;
     }
@@ -36,8 +38,8 @@ public class Customer {
         if (name != null && !name.trim().isEmpty()) {
             this.name = name.trim();
         } else {
-            System.out.println("Warning: Customer name cannot be empty! Setting to 'Unknown Customer'.");
-            this.name = "Unknown Customer";
+            System.out.println("Warning: Model.Customer name cannot be empty! Setting to 'Unknown Model.Customer'.");
+            this.name = "Unknown Model.Customer";
         }
     }
 
@@ -77,7 +79,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{customerId=" + customerId +
+        return "Model.Customer{customerId=" + customerId +
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", loyaltyPoints=" + loyaltyPoints +
