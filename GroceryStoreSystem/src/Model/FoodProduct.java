@@ -1,31 +1,17 @@
-package Model;
+package model;
 
-public class FoodProduct extends Product implements Discountable {
 
-    private int expirationDays;
+public class FoodProduct extends Product {
+    private final int expirationDays;
 
-    public FoodProduct(String name, double price, String category,
-                       boolean available, int expirationDays) {
-        super(name, price, category, available);
-        if (expirationDays < 0)
-            throw new IllegalArgumentException("Invalid expiration days");
+
+    public FoodProduct(String name, double price, String category, int expirationDays) {
+        super(name, price, category);
         this.expirationDays = expirationDays;
     }
 
-    @Override
-    public String getProductType() {
-        return "Food Model.Product";
-    }
 
-    @Override
-    public double calculateFinalPrice() {
-        return expirationDays <= 3 ? price * 0.8 : price;
-    }
-
-    @Override
-    public void applyDiscount(double percent) {
-        if (percent <= 0 || percent > 100)
-            throw new IllegalArgumentException("Invalid discount");
-        price *= (1 - percent / 100);
+    public int getExpirationDays() {
+        return expirationDays;
     }
 }
